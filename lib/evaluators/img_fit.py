@@ -28,6 +28,11 @@ class Evaluator:
         psnr_item = psnr(gt_rgb, pred_rgb, data_range=1.)
         self.psnrs.append(psnr_item)
         save_path = os.path.join(cfg.result_dir, 'vis/res.jpg')
+        pred_rgb = np.clip(pred_rgb, 0, 1)  # 确保值在0到1之间
+        pred_rgb = (pred_rgb * 255).astype(np.uint8)
+
+        gt_rgb = np.clip(gt_rgb, 0, 1)  # 确保值在0到1之间
+        gt_rgb = (gt_rgb * 255).astype(np.uint8)
         imageio.imwrite(save_path, img_utils.horizon_concate(gt_rgb, pred_rgb))
 
     def summarize(self):
